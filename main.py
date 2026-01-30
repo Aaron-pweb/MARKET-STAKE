@@ -1,20 +1,19 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
+from market_service import MarketStackService
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
 API_KEY = app.config.get("API_KEY")
-app.secret_key = app.config.get('API_KEY')
-users = {}
+app.secret_key = "app.config.get('API_KEY')"
+app.config["SECRETE_KEY"] = "THIS NIS TEH SECRETE KEY YEAH"
 
+users = {}
 
 @app.route("/")
 def home():
-	print(API_KEY)
-	print(users)
 	"""Home page. Shows sign in / sign up links or dashboard link when signed in."""
 	user = session.get("user")
 	return render_template("home.html", user=user)
-
 
 @app.route("/sign-in", methods=["GET", "POST"])
 def sign_in():
@@ -54,7 +53,16 @@ def dashboard():
 	if not user:
 		flash("Please sign in first", "info")
 		return redirect(url_for("sign_in"))
-	return render_template("dashboard.html", user=user)
+	
+	try:
+		service = MarketStackService(api_key=API_KEY)
+		stock_data = service.get_stock_data()
+	except Exception as e:
+		print(f"Error getting stock data: {e}")
+		stock_data = []
+		flash("Error retrieving stock data", "danger")
+
+	return render_template("dashboard.html", user=user, stock_data=stock_data)
 
 
 @app.route("/sign-out")
@@ -64,13 +72,5 @@ def sign_out():
 	return redirect(url_for("home"))
 
 
-# Suggested additional routes (implement as needed):
-# - /profile : view / edit user profile
-# - /reset-password : password reset flow (email + token)
-# - /api/... : JSON endpoints for app data
-# - /static/... : serve assets (Flask serves /static by default)
-
-
 if __name__ == "__main__":
-	# Run in debug for local development only
 	app.run(debug=True)
