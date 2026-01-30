@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Market Stake{% endblock %}
+
+{% block content %}
+  <div class="p-4 bg-light rounded-3">
+    <h1>Welcome to Market Stake</h1>
+    <p class="lead">A minimal Flask app layout with sign in and sign up routes.</p>
+    {% if user %}
+      <p>Signed in as <strong>{{ user }}</strong>.</p>
+      <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Go to dashboard</a>
+    {% else %}
+      <a class="btn btn-primary me-2" href="{{ url_for('sign_in') }}">Sign in</a>
+      <a class="btn btn-outline-primary" href="{{ url_for('sign_up') }}">Sign up</a>
+    {% endif %}
+  </div>
+{% endblock %}

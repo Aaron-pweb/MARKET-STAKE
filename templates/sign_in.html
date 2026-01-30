@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In - Market Stake{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2>Sign in</h2>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input name="username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input name="password" type="password" class="form-control" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Sign in</button>
+        <a class="btn btn-link" href="{{ url_for('sign_up') }}">Create an account</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}
