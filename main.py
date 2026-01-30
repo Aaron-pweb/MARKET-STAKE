@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-# import os
-
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
